@@ -6,6 +6,9 @@ import (
 )
 
 func (h *Handler) previewHandler(w http.ResponseWriter, r *http.Request) {
+	h.mx.Lock()
+	defer h.mx.Unlock()
+
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 

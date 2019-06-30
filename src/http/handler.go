@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"sync"
 
 	"github.com/gorilla/mux"
 
@@ -15,11 +16,14 @@ import (
 
 type Handler struct {
 	app *app.Handler
+
+	mx *sync.Mutex
 }
 
 func New(app *app.Handler) *Handler {
 	return &Handler{
 		app: app,
+		mx:  &sync.Mutex{},
 	}
 }
 
@@ -46,6 +50,9 @@ func (h *Handler) Run() {
 }
 
 func (h *Handler) currentHandler(w http.ResponseWriter, r *http.Request) {
+	h.mx.Lock()
+	defer h.mx.Unlock()
+
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 
@@ -53,6 +60,9 @@ func (h *Handler) currentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) nextHandler(w http.ResponseWriter, r *http.Request) {
+	h.mx.Lock()
+	defer h.mx.Unlock()
+
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 

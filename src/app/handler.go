@@ -33,7 +33,7 @@ func New(
 	storage *storage.Handler,
 ) (*Handler, error) {
 	h := &Handler{
-		previewLimit: 4,
+		previewLimit: 10,
 	}
 
 	for _, channelId := range channelIds {
@@ -80,7 +80,7 @@ func (h *Handler) Next() *youtube.Item {
 
 func (h *Handler) Preview() (result []*youtube.Item) {
 
-	current := h.currentIndex
+	current := h.currentIndex + 1
 	for i := 0; i < h.previewLimit; i++ {
 		result = append(result, h.items[current])
 
