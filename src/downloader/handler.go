@@ -1,6 +1,8 @@
 package downloader
 
 import (
+	"log"
+
 	"git.vsh-labs.cz/cml/nest/src/storage"
 	"git.vsh-labs.cz/cml/nest/src/youtube"
 )
@@ -17,7 +19,16 @@ func New(storage *storage.Handler, youtube *youtube.Handler) *Handler {
 	}
 }
 
-func (h *Handler) SaveChannelData(channelId string) error {
+func (h *Handler) SaveData(channelIds []string) {
+	for _, channelId := range channelIds {
+		err := h.saveChannelData(channelId)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}
+
+func (h *Handler) saveChannelData(channelId string) error {
 	var data storage.Data
 
 	res, err := h.youtube.LoadData(channelId, "")
