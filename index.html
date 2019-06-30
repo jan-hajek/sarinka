@@ -38,6 +38,12 @@
 </div>
 
 <script>
+	var url = location.protocol + "//" + location.hostname
+
+	var port = location.port;
+	if (port != "80") {
+		url += ":"+ port
+	}
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -51,7 +57,7 @@
     var player;
 
     function onYouTubeIframeAPIReady() {
-        getJSON("http://localhost:8080/current/", function (status, response) {
+        getJSON(url + "/current/", function (status, response) {
             player = new YT.Player('player', {
                 width: '1000',
                 height: '580',
@@ -67,7 +73,7 @@
     }
 
     function nextVideo() {
-        getJSON("http://localhost:8080/next/", function (status, response) {
+        getJSON(url + "/next/", function (status, response) {
             player.loadVideoById(response.videoId, 1)
         })
 
@@ -88,15 +94,13 @@
     };
 
     function loadPreview() {
-        getJSON("http://localhost:8080/preview/", function (status, response) {
+        getJSON(url + "/preview/", function (status, response) {
             let previewInfo = document.getElementById("previewInfo")
             let previewItems = document.getElementById("previewItems")
             previewItems.innerHTML = ""
             previewInfo.innerHTML = response.Current + "/" + response.TotalCount
 
             response.Items.map(function (value, index, array) {
-                new HTMLDivElement()
-
                 var img = new Image(value.Width, value.Height);
                 img.src = value.Url;
                 img.style = "image";

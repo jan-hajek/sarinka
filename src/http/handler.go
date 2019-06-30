@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"path"
 
 	"github.com/gorilla/mux"
@@ -36,7 +37,12 @@ func (h *Handler) Run() {
 		http.ServeFile(w, r, p)
 	})
 
-	log.Fatal(http.ListenAndServe("localhost:8080", r))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
 func (h *Handler) currentHandler(w http.ResponseWriter, r *http.Request) {
