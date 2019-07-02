@@ -19,22 +19,17 @@ func GetChannelIds() []string {
 type Handler struct {
 	storage *storage.Handler
 
-	channels     []*Channel
-	previewLimit int
-
-	//actualChannel int
-
-	currentIndex int
-	items        []*youtube.Item
+	channels   []*Channel
+	allChannel *Channel
 }
 
 func New(
 	channelIds []string,
 	storage *storage.Handler,
 ) (*Handler, error) {
-	h := &Handler{
-		previewLimit: 10,
-	}
+	h := &Handler{}
+
+	var allItems []*youtube.Item
 
 	for _, channelId := range channelIds {
 		data, err := storage.LoadData(channelId)
@@ -43,77 +38,31 @@ func New(
 		}
 
 		h.channels = append(h.channels,
-			NewChannel(channelId, data.Items, data.TotalResults),
+			NewChannel(channelId, data.Name, data.Thumbnail.Url, data.Items, data.TotalResults),
 		)
 
-		h.items = append(h.items, data.Items...)
+		allItems = append(allItems, data.Items...)
 	}
 
 	sort.Sort(&itemSorter{
-		items: h.items,
+		items: allItems,
 	})
+
+	h.allChannel = NewChannel("", "", "", allItems, len(allItems))
 
 	return h, nil
 }
 
-func (h *Handler) TotalCount() int {
-	return len(h.items)
-}
-
-func (h *Handler) CurrentIndex() int {
-	return h.currentIndex
-}
-
-func (h *Handler) Current() *youtube.Item {
-	return h.items[h.currentIndex]
-}
-
-func (h *Handler) Next() *youtube.Item {
-	h.currentIndex++
-
-	if h.currentIndex >= len(h.items) {
-		h.currentIndex = 0
-	}
-
-	return h.Current()
-}
-
-func (h *Handler) Preview() (result []*youtube.Item) {
-
-	current := h.currentIndex + 1
-	for i := 0; i < h.previewLimit; i++ {
-		result = append(result, h.items[current])
-
-		current++
-		if current >= len(h.items) {
-			current = 0
+func (h *Handler) GetChannel(channelId string) *Channel {
+	for _, ch := range h.channels {
+		if ch.Id == channelId {
+			return ch
 		}
 	}
 
-	return
+	return h.allChannel
 }
 
-//
-//func (h *Handler) Current() *youtube.Item {
-//	return h.channels[h.actualChannel].Current()
-//}
-//
-//func (h *Handler) Next() *youtube.Item {
-//	next := h.channels[h.actualChannel].Next()
-//	if next == nil {
-//		if h.actualChannel >= len(h.channels)-1 {
-//			h.actualChannel = 0
-//		} else {
-//			h.actualChannel++
-//		}
-//		return h.channels[h.actualChannel].Reset()
-//	}
-//	return next
-//}
-//
-//func (h *Handler) Preview() (result []*youtube.Item) {
-//
-//	result = h.channels[h.actualChannel].Preview(h.previewLimit)
-//
-//	return
-//}
+func (h *Handler) GetChannels() []*Channel {
+	return h.channels
+}

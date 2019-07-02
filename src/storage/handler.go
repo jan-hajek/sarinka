@@ -19,8 +19,14 @@ func New(path string) *Handler {
 }
 
 type Data struct {
+	Name         string
+	Thumbnail    Thumbnail
 	TotalResults int
 	Items        []*youtube.Item
+}
+
+type Thumbnail struct {
+	Url string
 }
 
 func (h *Handler) LoadData(channelId string) (_ Data, err error) {

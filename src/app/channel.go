@@ -5,19 +5,22 @@ import (
 )
 
 type Channel struct {
-	id         string
-	downloaded []*youtube.Item
-	totalCount int
+	Id           string
+	Name         string
+	ThumbnailUrl string
+	downloaded   []*youtube.Item
+	totalCount   int
 
-	ids    map[string]struct{}
-	actual int
+	ids map[string]int
 }
 
-func NewChannel(id string, downloaded []*youtube.Item, totalCount int) *Channel {
+func NewChannel(id, name, thumbnailUrl string, downloaded []*youtube.Item, totalCount int) *Channel {
 	ch := &Channel{
-		id:         id,
-		ids:        make(map[string]struct{}),
-		totalCount: totalCount,
+		Id:           id,
+		Name:         name,
+		ThumbnailUrl: thumbnailUrl,
+		ids:          make(map[string]int),
+		totalCount:   totalCount,
 	}
 
 	ch.add(downloaded)
@@ -26,40 +29,39 @@ func NewChannel(id string, downloaded []*youtube.Item, totalCount int) *Channel 
 }
 func (ch *Channel) add(items []*youtube.Item) {
 	for _, i := range items {
+		if i.Id == "" {
+			continue
+		}
 		if _, exists := ch.ids[i.Id]; !exists {
 			ch.downloaded = append(ch.downloaded, i)
-			ch.ids[i.Id] = struct{}{}
+			ch.ids[i.Id] = len(ch.downloaded) - 1
 		} else {
 			println("duplicate entry,", i.Id)
 		}
 	}
 }
 
-func (ch *Channel) Current() *youtube.Item {
-	if ch.actual >= len(ch.downloaded) {
-		return nil
+func (ch *Channel) GetDownloadedCount() int {
+	return len(ch.downloaded)
+}
+
+func (ch *Channel) getPosition(id string) int {
+	if pos, exists := ch.ids[id]; exists {
+		return pos
 	}
-
-	return ch.downloaded[ch.actual]
+	return 0
 }
 
-func (ch *Channel) Next() *youtube.Item {
-	ch.actual++
+func (ch *Channel) GetItems(startId string, limit int) (position int, res []*youtube.Item) {
+	position = ch.getPosition(startId)
 
-	return ch.Current()
-}
-
-func (ch *Channel) Reset() *youtube.Item {
-	ch.actual = 0
-
-	return ch.Current()
-}
-
-func (ch *Channel) Preview(limit int) (res []*youtube.Item) {
-	limit = ch.actual + limit
-	if limit > len(ch.downloaded) {
-		limit = len(ch.downloaded)
+	x := position
+	for i := 0; i < limit; i++ {
+		res = append(res, ch.downloaded[x])
+		x++
+		if x == len(ch.downloaded) {
+			x = 0
+		}
 	}
-
-	return ch.downloaded[ch.actual:limit]
+	return
 }

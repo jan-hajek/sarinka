@@ -1,12 +1,9 @@
 package http
 
 import (
-	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
-	"path"
 	"sync"
 
 	"github.com/gorilla/mux"
@@ -30,16 +27,20 @@ func New(app *app.Handler) *Handler {
 func (h *Handler) Run() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/current/", h.currentHandler)
-	r.HandleFunc("/next/", h.nextHandler)
-	r.HandleFunc("/preview/", h.previewHandler)
-
+	// html
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		p := path.Dir("./index.html")
-		// set header
 		w.Header().Set("Content-type", "text/html")
-		http.ServeFile(w, r, p)
+		http.ServeFile(w, r, "./www/homepage.html")
 	})
+	r.HandleFunc("/play/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-type", "text/html")
+		http.ServeFile(w, r, "./www/play.html")
+	})
+
+	// rest
+	r.HandleFunc("/current/", h.currentHandler)
+	r.HandleFunc("/preview/", h.previewHandler)
+	r.HandleFunc("/channels/", h.channelsHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -49,22 +50,10 @@ func (h *Handler) Run() {
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
-func (h *Handler) currentHandler(w http.ResponseWriter, r *http.Request) {
-	h.mx.Lock()
-	defer h.mx.Unlock()
-
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-
-	io.WriteString(w, fmt.Sprintf(`{"videoId":"%s"}`, h.app.Current().Id))
+func getId(r *http.Request) (id string) {
+	return r.URL.Query().Get("id")
 }
 
-func (h *Handler) nextHandler(w http.ResponseWriter, r *http.Request) {
-	h.mx.Lock()
-	defer h.mx.Unlock()
-
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-
-	io.WriteString(w, fmt.Sprintf(`{"videoId":"%s"}`, h.app.Next().Id))
+func getChannelId(r *http.Request) (channelId string) {
+	return r.URL.Query().Get("channelId")
 }

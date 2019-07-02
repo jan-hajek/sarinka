@@ -3,48 +3,39 @@ package http
 import (
 	"encoding/json"
 	"net/http"
+
+	"git.vsh-labs.cz/cml/nest/src/youtube"
 )
 
 func (h *Handler) previewHandler(w http.ResponseWriter, r *http.Request) {
 	h.mx.Lock()
 	defer h.mx.Unlock()
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
+	channelId := getChannelId(r)
+	id := getId(r)
 
-	preview := preview{
-		TotalCount: h.app.TotalCount(),
-		Current:    h.app.CurrentIndex() + 1,
+	channel := h.app.GetChannel(channelId)
+	position, items := channel.GetItems(id, 10)
+
+	var result previewResponse
+	result.Items = items
+	result.TotalCount = channel.GetDownloadedCount()
+	if position == 0 {
+		result.Position = result.TotalCount
+	} else {
+		result.Position = position
 	}
 
-	for _, i := range h.app.Preview() {
-		preview.Items = append(
-			preview.Items,
-			Item{
-				Url:    i.Thumbnail.Url,
-				Width:  i.Thumbnail.Width,
-				Height: i.Thumbnail.Height,
-			},
-		)
-	}
-
-	data, err := json.Marshal(&preview)
+	data, err := json.Marshal(&result)
 	if err != nil {
 		panic(err)
 	}
 
 	w.Write(data)
-
 }
 
-type preview struct {
+type previewResponse struct {
+	Position   int
 	TotalCount int
-	Current    int
-	Items      []Item
-}
-
-type Item struct {
-	Url    string
-	Width  int
-	Height int
+	Items      []*youtube.Item
 }

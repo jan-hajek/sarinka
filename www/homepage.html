@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: black;
+		}
+
+		.channel {
+			display: inline-block;
+			margin: 20px;
+		}
+
+		.channel.selected {
+			border: 20px orange solid;
+		}
+
+		.channel .img {
+			width: 200px;
+			vertical-align: bottom;
+		}
+
+	</style>
+</head>
+<body>
+<div id="main">
+	<div id="channels">
+
+	</div>
+</div>
+
+<script>
+    var url = location.protocol + "//" + location.hostname;
+
+    var port = location.port;
+    if (port !== "80") {
+        url += ":" + port
+    }
+
+    let position = 0;
+    let channels = [];
+
+    document.onkeydown = function (event) {
+        document.getElementById("channel" + position).classList.remove("selected");
+
+        switch (event.keyCode) {
+            case 39:
+                position = Math.min(position + 1, channels.length - 1);
+                break;
+            case 37:
+                position = Math.max(position - 1, 0);
+                break;
+            case 13:
+                location.href = "play/?channelId=" + channels[position].Id;
+
+                break;
+        }
+
+        console.log(position)
+
+        document.getElementById("channel" + position).classList.add("selected");
+    };
+
+    function getChannelsUrl() {
+        return url + "/channels/";
+    }
+
+    function getJSON(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'json';
+        xhr.onload = function () {
+            var status = xhr.status;
+            if (status === 200) {
+                callback(null, xhr.response);
+            } else {
+                callback(status, xhr.response);
+            }
+        };
+        xhr.send();
+    }
+
+    getJSON(getChannelsUrl(), function (status, response) {
+        let channelsDiv = document.getElementById("channels");
+        channelsDiv.innerHTML = "";
+
+        channels = response.Channels;
+
+        response.Channels.map(function (value, index, array) {
+            var div = document.createElement("div");
+            div.classList.add("channel");
+            if (index === 0) {
+                div.classList.add("selected");
+            }
+            div.id = "channel" + index;
+
+            var img = new Image();
+            img.src = value.ThumbnailUrl;
+            img.classList.add("img");
+
+            var text = document.createElement("div");
+            text.innerHTML = value.Name;
+            text.classList.add("title");
+
+            div.appendChild(img);
+            channelsDiv.appendChild(div);
+        })
+
+    })
+
+</script>
+</body>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: black;
+		}
+
+		#preview {
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 240px;
+			height: 100%;
+			background-color: #f5f5f5;
+			border-left: 1px solid #353535;
+			padding: 10px;
+			text-align: right;
+		}
+
+		#preview .image {
+		}
+
+		#preview .image img {
+			width: 200px;
+		}
+	</style>
+</head>
+<body>
+<div id="main">
+
+	<div id="player"></div>
+	<div id="preview">
+		<div id="previewInfo">
+		</div>
+		<div id="previewItems">
+		</div>
+	</div>
+
+</div>
+
+<script>
+    var url = location.protocol + "//" + location.hostname;
+
+    var port = location.port;
+    if (port !== "80") {
+        url += ":" + port
+    }
+
+    var urlParams = new URLSearchParams(location.search);
+
+    currentId = urlParams.get("id");
+    nextId = null;
+    channelId = urlParams.get("channelId");
+
+    function getPlayUrl(id) {
+        return createUrl("/current/", id, channelId);
+    }
+
+    function getPreviewUrl(id) {
+        return createUrl("/preview/", id, channelId);
+    }
+
+    function createUrl(prefix, id, channelId) {
+        data = {};
+
+        let u = url + prefix;
+        if (id !== null) {
+            data.id = id
+        }
+        if (channelId !== null) {
+            data.channelId = channelId
+        }
+
+        let searchParams = new URLSearchParams(data);
+
+        return u + "?" + searchParams.toString()
+    }
+
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+
+    function onYouTubeIframeAPIReady() {
+        getJSON(getPlayUrl(currentId), function (status, response) {
+            changePage(response)
+        });
+    }
+
+    function nextVideo() {
+        getJSON(getPlayUrl(nextId), function (status, response) {
+            changePage(response)
+            history.pushState({}, "xx", createUrl("/play/", currentId, channelId));
+        })
+    }
+
+    function changePage(response) {
+        currentId = response.Current.Id;
+        nextId = response.Next.Id;
+
+        setYoutubeId(currentId);
+        loadPreview(nextId);
+    }
+
+    function setYoutubeId(id) {
+        if (!player) {
+            player = new YT.Player('player', {
+                width: '1000',
+                height: '580',
+                videoId: id,
+                playerVars: {"start": 1},
+                events: {
+                    'onReady': function onPlayerReady(event) {
+                        event.target.playVideo();
+                    },
+                    // 'onStateChange': onPlayerStateChange
+                }
+            });
+        } else {
+            player.loadVideoById(id, 1);
+        }
+    }
+
+
+    document.onkeydown = function (event) {
+        switch (event.keyCode) {
+            case 39:
+                nextVideo();
+                break;
+            case 13:
+                location.href = url;
+            break;
+        }
+    };
+
+    function loadPreview(id) {
+        getJSON(getPreviewUrl(id), function (status, response) {
+            let previewInfo = document.getElementById("previewInfo");
+            let previewItems = document.getElementById("previewItems");
+            previewItems.innerHTML = "";
+            previewInfo.innerHTML = response.Position + "/" + response.TotalCount;
+
+            response.Items.map(function (value, index, array) {
+                var div = document.createElement("div");
+                div.classList.add("image");
+                div.classList.add("position" + index);
+
+                var img = new Image(value.Thumbnail.Width);
+                img.src = value.Thumbnail.Url;
+
+                div.appendChild(img);
+                previewItems.appendChild(div);
+            })
+
+        })
+    }
+
+    function getJSON(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'json';
+        xhr.onload = function () {
+            var status = xhr.status;
+            if (status === 200) {
+                callback(null, xhr.response);
+            } else {
+                callback(status, xhr.response);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</body>
