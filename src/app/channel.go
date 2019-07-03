@@ -14,19 +14,31 @@ type Channel struct {
 	ids map[string]int
 }
 
-func NewChannel(id, name, thumbnailUrl string, downloaded []*youtube.Item, totalCount int) *Channel {
+func NewChannel(result youtube.Result) *Channel {
 	ch := &Channel{
-		Id:           id,
-		Name:         name,
-		ThumbnailUrl: thumbnailUrl,
+		Id:           result.Channel.Id,
+		Name:         result.Channel.Title,
+		ThumbnailUrl: result.Channel.Thumbnail.Url,
 		ids:          make(map[string]int),
-		totalCount:   totalCount,
+		totalCount:   result.TotalResults,
 	}
 
-	ch.add(downloaded)
+	ch.add(result.Items)
 
 	return ch
 }
+
+func NewChannelWithAll(items []*youtube.Item, totalCount int) *Channel {
+	ch := &Channel{
+		ids:        make(map[string]int),
+		totalCount: totalCount,
+	}
+
+	ch.add(items)
+
+	return ch
+}
+
 func (ch *Channel) add(items []*youtube.Item) {
 	for _, i := range items {
 		if i.Id == "" {

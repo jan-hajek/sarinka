@@ -21,28 +21,61 @@ func New(key string, pageLimit int) *Handler {
 }
 
 func (h *Handler) LoadData(channelId string, nextPageToken string) (res Result, err error) {
-	url := fmt.Sprintf(
+	channelUrl := fmt.Sprintf(
+		"https://www.googleapis.com/youtube/v3/channels?key=%s&id=%s&part=snippet,id",
+		h.key,
+		channelId,
+	)
+	log.Println(channelUrl)
+
+	var channelResult channelResult
+	err = getJson(channelUrl, &channelResult)
+	if err != nil {
+		return
+	}
+
+	if len(channelResult.Items) == 0 {
+		log.Fatal("no data fo channel")
+	}
+
+	res.Channel.Id = channelResult.Items[0].Id
+	res.Channel.Title = channelResult.Items[0].Snippet.Title
+	res.Channel.Thumbnail.Url = channelResult.Items[0].Snippet.Thumbnails.High.Url
+	res.Channel.Thumbnail.Height = channelResult.Items[0].Snippet.Thumbnails.High.Height
+	res.Channel.Thumbnail.Width = channelResult.Items[0].Snippet.Thumbnails.High.Width
+
+	itemsUrl := fmt.Sprintf(
 		"https://www.googleapis.com/youtube/v3/search?key=%s&channelId=%s&part=snippet,id&order=date&maxResults=%d",
 		h.key,
 		channelId,
 		h.pageLimit,
 	)
 	if nextPageToken != "" {
-		url += fmt.Sprintf("&pageToken=%s", nextPageToken)
+		itemsUrl += fmt.Sprintf("&pageToken=%s", nextPageToken)
 	}
 
-	log.Println(url)
+	log.Println(itemsUrl)
 
-	var result result
-	err = getJson(url, &result)
+	var itemsResult itemsResult
+	err = getJson(itemsUrl, &itemsResult)
 	if err != nil {
 		return
 	}
 
-	var items []*Item
-	for _, i := range result.Items {
-		items = append(items, &Item{
-			Id: i.Id.VideoId,
+	for _, i := range itemsResult.Items {
+		if i.Id.VideoId == "" {
+			log.Println(fmt.Sprintf("wrong kind id [%s]", i.Id.VideoId))
+			continue
+
+		}
+		if i.Kind != "youtube#searchResult" {
+			log.Println(fmt.Sprintf("wrong kind for id [%s], kind [%s]", i.Id.VideoId, i.Kind))
+			continue
+		}
+
+		res.Items = append(res.Items, &Item{
+			Id:    i.Id.VideoId,
+			Title: i.Snippet.Title,
 			Thumbnail: Thumbnail{
 				Url:    i.Snippet.Thumbnails.Medium.Url,
 				Width:  i.Snippet.Thumbnails.Medium.Width,
@@ -51,14 +84,14 @@ func (h *Handler) LoadData(channelId string, nextPageToken string) (res Result, 
 		})
 	}
 
-	return Result{
-		Items:         items,
-		TotalResults:  result.PageInfo.TotalResults,
-		NextPageToken: result.NextPageToken,
-	}, nil
+	res.TotalResults = itemsResult.PageInfo.TotalResults
+	res.NextPageToken = itemsResult.NextPageToken
+
+	return
 }
 
 type Result struct {
+	Channel       Channel
 	Items         []*Item
 	TotalResults  int
 	NextPageToken string
@@ -66,6 +99,13 @@ type Result struct {
 
 type Item struct {
 	Id        string
+	Title     string
+	Thumbnail Thumbnail
+}
+
+type Channel struct {
+	Id        string
+	Title     string
 	Thumbnail Thumbnail
 }
 
@@ -75,16 +115,34 @@ type Thumbnail struct {
 	Height int
 }
 
-type result struct {
+type channelResult struct {
+	Items []struct {
+		Id      string
+		Snippet struct {
+			Title      string
+			Thumbnails struct {
+				High struct {
+					Url    string
+					Width  int
+					Height int
+				}
+			}
+		}
+	}
+}
+
+type itemsResult struct {
 	NextPageToken string
 	PageInfo      struct {
 		TotalResults int
 	}
 	Items []struct {
-		Id struct {
+		Kind string
+		Id   struct {
 			VideoId string
 		}
 		Snippet struct {
+			Title      string
 			Thumbnails struct {
 				Medium struct {
 					Url    string

@@ -23,7 +23,7 @@
 			vertical-align: middle;
 		}
 
-		.channel.selected img{
+		.channel.selected img {
 			opacity: 1;
 			width: 200px;
 			border: 5px solid red;
@@ -54,17 +54,20 @@
     let position = 0;
     let channels = [];
 
-    function moveChannelsPosition() {
+    var urlParams = new URLSearchParams(location.search);
+    channelId = urlParams.get("channelId");
+
+    function selectCurrentChannel() {
         let left = screen.width / 2;
 
         left -= 120;
 
         left -= position * 190;
 
-		document.getElementById("channels").style.left = left + "px";
-	}
+        document.getElementById("channels").style.left = left + "px";
 
-	moveChannelsPosition()
+        document.getElementById("channel" + position).classList.add("selected");
+    }
 
     document.onkeydown = function (event) {
         document.getElementById("channel" + position).classList.remove("selected");
@@ -81,8 +84,7 @@
 
                 break;
         }
-        document.getElementById("channel" + position).classList.add("selected");
-       	moveChannelsPosition()
+        selectCurrentChannel()
     };
 
     function getChannelsUrl() {
@@ -109,12 +111,13 @@
         channelsDiv.innerHTML = "";
 
         channels = response.Channels;
+        channelsDiv.style.width = (250 * response.Channels.length) + "px";
 
         response.Channels.map(function (value, index, array) {
             var div = document.createElement("div");
             div.classList.add("channel");
-            if (index === 0) {
-                div.classList.add("selected");
+            if (value.Id == channelId) {
+                position = index
             }
             div.id = "channel" + index;
 
@@ -128,7 +131,10 @@
 
             div.appendChild(img);
             channelsDiv.appendChild(div);
-        })
+        });
+
+
+		selectCurrentChannel();
 
     })
 

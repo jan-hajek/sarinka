@@ -137,8 +137,12 @@
                 nextVideo();
                 break;
             case 13:
-                location.href = url;
-            break;
+                if (channelId !== null) {
+                    location.href = url + "?channelId=" + channelId;
+                } else {
+                    location.href = url;
+                }
+                break;
         }
     };
 

@@ -13,6 +13,15 @@ func GetChannelIds() []string {
 		"UC-Gm4EN7nNNR3k67J8ywF4g", // blippi toys
 		"UC5PYHgAzJ1wLEidB58SK6Xw", // blippi
 		"UCH5TSOM_0xZbbLImGqigtsA", // vroom vroom
+		"UCgNqMjgfN6YQYCYOxhp78xQ", // pisnicky pro deti
+		"UCyTOz12LseUJhDtl8K6-vFw", // baby studio
+		"UCnUExytdcrLyl_ccqe2dxpg", // ceske pohadky
+		"UCVGHomAxlCzmBH7T5SN0_ag", // ciperkove
+		"UC20HC7Rj2_pyyUq4xAjtw0Q", // baby smile
+		"UCRdYoBTTupd3svI9kV36UvQ", // nakladak
+		"UCjuM-aDNfzbVShImGfj0WOA", // odtahove auto
+		"UClroLesWYk7cc9Tctv8HrkA", // monster auto
+		"UCZBqWU1GgUHBTPZ-FMPZ8-Q", // byl jednou
 	}
 }
 
@@ -38,7 +47,7 @@ func New(
 		}
 
 		h.channels = append(h.channels,
-			NewChannel(channelId, data.Name, data.Thumbnail.Url, data.Items, data.TotalResults),
+			NewChannel(data),
 		)
 
 		allItems = append(allItems, data.Items...)
@@ -48,7 +57,7 @@ func New(
 		items: allItems,
 	})
 
-	h.allChannel = NewChannel("", "", "", allItems, len(allItems))
+	h.allChannel = NewChannelWithAll(allItems, len(allItems))
 
 	return h, nil
 }

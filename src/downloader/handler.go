@@ -29,43 +29,10 @@ func (h *Handler) SaveData(channelIds []string) {
 }
 
 func (h *Handler) saveChannelData(channelId string) error {
-	var data storage.Data
-
 	res, err := h.youtube.LoadData(channelId, "")
 	if err != nil {
 		return err
 	}
 
-	data.TotalResults = res.TotalResults
-	data.Items = append(data.Items, res.Items...)
-
-	return h.storage.SaveData(channelId, &data)
+	return h.storage.SaveData(channelId, res)
 }
-
-//func (h *Handler) SaveChannelData(channelId string) error {
-//	var nextPageToken string
-//	var i int
-//
-//	var data storage.Data
-//
-//	for {
-//		i++
-//		if i > 20 {
-//			panic("xxxx")
-//		}
-//		res, err := h.youtube.LoadData(channelId, nextPageToken)
-//		if err != nil {
-//			return err
-//		}
-//		nextPageToken = res.NextPageToken
-//
-//		data.TotalResults = res.TotalResults
-//		data.Items = append(data.Items, res.Items...)
-//
-//		if nextPageToken == "" {
-//			break
-//		}
-//	}
-//
-//	return h.storage.SaveData(channelId, &data)
-//}

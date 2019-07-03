@@ -18,24 +18,13 @@ func New(path string) *Handler {
 	}
 }
 
-type Data struct {
-	Name         string
-	Thumbnail    Thumbnail
-	TotalResults int
-	Items        []*youtube.Item
-}
-
-type Thumbnail struct {
-	Url string
-}
-
-func (h *Handler) LoadData(channelId string) (_ Data, err error) {
+func (h *Handler) LoadData(channelId string) (_ youtube.Result, err error) {
 	bytes, err := ioutil.ReadFile(path.Join(h.path, channelId+".json"))
 	if err != nil {
 		return
 	}
 
-	var data Data
+	var data youtube.Result
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
 		return
@@ -44,7 +33,7 @@ func (h *Handler) LoadData(channelId string) (_ Data, err error) {
 	return data, err
 }
 
-func (h *Handler) SaveData(channelId string, v *Data) (err error) {
+func (h *Handler) SaveData(channelId string, v youtube.Result) (err error) {
 	data, err := json.Marshal(v)
 	if err != nil {
 		return
