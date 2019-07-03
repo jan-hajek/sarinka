@@ -9,20 +9,29 @@
 			margin: 0;
 			padding: 0;
 			background-color: black;
+			overflow: hidden;
+		}
+
+		#channels {
+			position: relative;
+			margin-top: 100px;
 		}
 
 		.channel {
 			display: inline-block;
 			margin: 20px;
+			vertical-align: middle;
 		}
 
-		.channel.selected {
-			border: 20px orange solid;
+		.channel.selected img{
+			opacity: 1;
+			width: 200px;
+			border: 5px solid red;
 		}
 
 		.channel .img {
-			width: 200px;
-			vertical-align: bottom;
+			width: 150px;
+			opacity: 0.6;
 		}
 
 	</style>
@@ -45,6 +54,18 @@
     let position = 0;
     let channels = [];
 
+    function moveChannelsPosition() {
+        let left = screen.width / 2;
+
+        left -= 120;
+
+        left -= position * 190;
+
+		document.getElementById("channels").style.left = left + "px";
+	}
+
+	moveChannelsPosition()
+
     document.onkeydown = function (event) {
         document.getElementById("channel" + position).classList.remove("selected");
 
@@ -60,10 +81,8 @@
 
                 break;
         }
-
-        console.log(position)
-
         document.getElementById("channel" + position).classList.add("selected");
+       	moveChannelsPosition()
     };
 
     function getChannelsUrl() {
