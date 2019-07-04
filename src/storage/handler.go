@@ -18,8 +18,25 @@ func New(path string) *Handler {
 	}
 }
 
-func (h *Handler) LoadData(channelId string) (_ youtube.Result, err error) {
-	bytes, err := ioutil.ReadFile(path.Join(h.path, channelId+".json"))
+func (h *Handler) LoadAllData() (res []youtube.Result, err error) {
+	files, err := ioutil.ReadDir(h.path)
+	if err != nil {
+		return
+	}
+
+	for _, f := range files {
+		data, err := h.loadFile(path.Join(h.path, f.Name()))
+		if err != nil {
+			return res, err
+		}
+		res = append(res, data)
+	}
+
+	return
+}
+
+func (h *Handler) loadFile(path string) (_ youtube.Result, err error) {
+	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
 		return
 	}
