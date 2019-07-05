@@ -1,0 +1,94 @@
+{
+  "Channel": {
+    "Id": "songs",
+    "Title": "Songs",
+    "Thumbnail": {
+      "Url": "https://i.ytimg.com/vi/CjbC9wAErts/mqdefault.jpg",
+      "Width": 320,
+      "Height": 180
+    }
+  },
+  "Items": [
+    {
+      "Id": "zxr_ySlEO2A",
+      "Title": "Fire Truck Song for Children",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/zxr_ySlEO2A/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "KIWXcJ2wbyw",
+      "Title": "Blippi Wheels On The Bus",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/KIWXcJ2wbyw/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "C9Z_YgbOLnY",
+      "Title": "Airplane",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/C9Z_YgbOLnY/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "UBax68QdHuY",
+      "Title": "Boats",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/UBax68QdHuY/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "cji_1LMV2qk",
+      "Title": "Monster truck",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/cji_1LMV2qk/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "YAguWAJTmBM",
+      "Title": "Excavator",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/YAguWAJTmBM/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "fysFwSfdQzc",
+      "Title": "Garbage truck",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/fysFwSfdQzc/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "xzWLoGdx3DE",
+      "Title": "Trains",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/xzWLoGdx3DE/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    },
+    {
+      "Id": "MY4ULeQbkmc",
+      "Title": "Tractor Song for Children with Blippi",
+      "Thumbnail": {
+        "Url": "https://i.ytimg.com/vi/MY4ULeQbkmc/mqdefault.jpg",
+        "Width": 320,
+        "Height": 180
+      }
+    }
+  ]
+}

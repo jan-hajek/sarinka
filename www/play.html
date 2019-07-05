@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<title>Sárinka</title>
 
 	<style type="text/css">
 		body {
@@ -106,7 +106,7 @@
     function changePage(response) {
         currentId = response.Current.Id;
         nextId = response.Next.Id;
-
+        document.title = response.Current.Title;
         setYoutubeId(currentId);
         loadPreview(nextId);
     }
@@ -138,11 +138,12 @@
     }
 
     document.onkeydown = function (event) {
-        switch (event.keyCode) {
-            case 39:
+        switch (event.key) {
+            case "ArrowRight":
                 nextVideo();
                 break;
-            case 13:
+            case "Enter":
+            case "Escape":
                 if (channelId !== null) {
                     location.href = url + "?channelId=" + channelId;
                 } else {

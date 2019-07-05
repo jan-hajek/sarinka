@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<title>Sárinka</title>
 
 	<style type="text/css">
 		body {
@@ -73,14 +73,14 @@
     document.onkeydown = function (event) {
         document.getElementById("channel" + position).classList.remove("selected");
 
-        switch (event.keyCode) {
-            case 39:
+        switch (event.key) {
+            case "ArrowRight":
                 position = Math.min(position + 1, channels.length - 1);
                 break;
-            case 37:
+            case "ArrowLeft":
                 position = Math.max(position - 1, 0);
                 break;
-            case 13:
+            case "Enter":
                 location.href = "play/?channelId=" + channels[position].Id;
 
                 break;
