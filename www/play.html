@@ -117,12 +117,12 @@
                 width: '1000',
                 height: '580',
                 videoId: id,
-                playerVars: {"start": 1},
+                playerVars: {start: 1, rel: 0, showinfo: 0, disablekb: 0, modestbranding: 1},
                 events: {
                     'onReady': function onPlayerReady(event) {
                         event.target.playVideo();
                     },
-                    // 'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange
                 }
             });
         } else {
@@ -130,6 +130,12 @@
         }
     }
 
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+            nextVideo();
+        }
+    }
 
     document.onkeydown = function (event) {
         switch (event.keyCode) {
