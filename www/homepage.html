@@ -36,6 +36,9 @@
 		}
 
 	</style>
+
+	<script src="scripts.js"></script>
+
 </head>
 <body>
 <div id="main">
@@ -44,100 +47,11 @@
 	</div>
 </div>
 
-<script>
-    var url = location.protocol + "//" + location.hostname;
 
-    var port = location.port;
-    if (port !== "80") {
-        url += ":" + port
-    }
-
-    let position = 0;
-    let channels = [];
-
-    var urlParams = new URLSearchParams(location.search);
-    channelId = urlParams.get("channelId");
-
-    function selectCurrentChannel() {
-        let left = screen.width / 2;
-
-        left -= 120;
-
-        left -= position * 190;
-
-        document.getElementById("channels").style.left = left + "px";
-
-        document.getElementById("channel" + position).classList.add("selected");
-    }
-
-    document.onkeydown = function (event) {
-        document.getElementById("channel" + position).classList.remove("selected");
-
-        switch (event.key) {
-            case "ArrowRight":
-                position = Math.min(position + 1, channels.length - 1);
-                break;
-            case "ArrowLeft":
-                position = Math.max(position - 1, 0);
-                break;
-            case "Enter":
-                location.href = "play/?channelId=" + channels[position].Id;
-
-                break;
-        }
-        selectCurrentChannel()
-    };
-
-    function getChannelsUrl() {
-        return url + "/channels/";
-    }
-
-    function getJSON(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.responseType = 'json';
-        xhr.onload = function () {
-            var status = xhr.status;
-            if (status === 200) {
-                callback(null, xhr.response);
-            } else {
-                callback(status, xhr.response);
-            }
-        };
-        xhr.send();
-    }
-
-    getJSON(getChannelsUrl(), function (status, response) {
-        let channelsDiv = document.getElementById("channels");
-        channelsDiv.innerHTML = "";
-
-        channels = response.Channels;
-        channelsDiv.style.width = (250 * response.Channels.length) + "px";
-
-        response.Channels.map(function (value, index, array) {
-            var div = document.createElement("div");
-            div.classList.add("channel");
-            if (value.Id == channelId) {
-                position = index
-            }
-            div.id = "channel" + index;
-
-            var img = new Image();
-            img.src = value.ThumbnailUrl;
-            img.classList.add("img");
-
-            var text = document.createElement("div");
-            text.innerHTML = value.Name;
-            text.classList.add("title");
-
-            div.appendChild(img);
-            channelsDiv.appendChild(div);
-        });
-
-
-		selectCurrentChannel();
-
-    })
-
+<script type="text/javascript">
+    startHomepage();
 </script>
+
+
 </body>
+</html>

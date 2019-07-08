@@ -42,6 +42,14 @@ func (h *Handler) Run() {
 		w.Header().Set("Expires", "0")
 		http.ServeFile(w, r, "./www/play.html")
 	})
+	//js
+	r.HandleFunc("/scripts.js", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-type", "text/javascript")
+		w.Header().Set("Cache-Control", "no-cache, private, max-age=0")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		http.ServeFile(w, r, "./www/scripts.js")
+	})
 
 	// rest
 	r.HandleFunc("/current/", h.currentHandler)

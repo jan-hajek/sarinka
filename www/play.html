@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Sárinka</title>
+	<title>Title</title>
 
 	<style type="text/css">
 		body {
@@ -29,13 +29,41 @@
 		#preview .image img {
 			width: 200px;
 		}
+
+		#playerOverlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: black;
+			opacity: 0.1;
+		}
+
+		#sleepIcon {
+			float: left;
+			height: 30px;
+		}
+
+		#sleepIcon.enabled {
+			background-color: red;
+		}
 	</style>
+
+
+	<script src="https://www.youtube.com/iframe_api"></script>
+	<script src="../scripts.js"></script>
 </head>
 <body>
 <div id="main">
 
 	<div id="player"></div>
+	<div id="playerOverlay"></div>
+
+
 	<div id="preview">
+		<div id="sleepIcon">
+			<img src="https://img.icons8.com/ios-glyphs/30/000000/sleeping-baby.png">
+		</div>
+
 		<div id="previewInfo">
 		</div>
 		<div id="previewItems">
@@ -44,150 +72,5 @@
 
 </div>
 
-<script>
-    var url = location.protocol + "//" + location.hostname;
-
-    var port = location.port;
-    if (port !== "80") {
-        url += ":" + port
-    }
-
-    var urlParams = new URLSearchParams(location.search);
-
-    currentId = urlParams.get("id");
-    nextId = null;
-    channelId = urlParams.get("channelId");
-
-    function getPlayUrl(id) {
-        return createUrl("/current/", id, channelId);
-    }
-
-    function getPreviewUrl(id) {
-        return createUrl("/preview/", id, channelId);
-    }
-
-    function createUrl(prefix, id, channelId) {
-        data = {};
-
-        let u = url + prefix;
-        if (id !== null) {
-            data.id = id
-        }
-        if (channelId !== null) {
-            data.channelId = channelId
-        }
-
-        let searchParams = new URLSearchParams(data);
-
-        return u + "?" + searchParams.toString()
-    }
-
-    var tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var player;
-
-    function onYouTubeIframeAPIReady() {
-        getJSON(getPlayUrl(currentId), function (status, response) {
-            changePage(response)
-        });
-    }
-
-    function nextVideo() {
-        getJSON(getPlayUrl(nextId), function (status, response) {
-            changePage(response)
-            history.pushState({}, "xx", createUrl("/play/", currentId, channelId));
-        })
-    }
-
-    function changePage(response) {
-        currentId = response.Current.Id;
-        nextId = response.Next.Id;
-        document.title = response.Current.Title;
-        setYoutubeId(currentId);
-        loadPreview(nextId);
-    }
-
-    function setYoutubeId(id) {
-        if (!player) {
-            player = new YT.Player('player', {
-                width: '1000',
-                height: '580',
-                videoId: id,
-                playerVars: {start: 1, rel: 0, showinfo: 0, disablekb: 0, modestbranding: 1},
-                events: {
-                    'onReady': function onPlayerReady(event) {
-                        event.target.playVideo();
-                    },
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        } else {
-            player.loadVideoById(id, 1);
-        }
-    }
-
-
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.ENDED) {
-            nextVideo();
-        }
-    }
-
-    document.onkeydown = function (event) {
-        switch (event.key) {
-            case "ArrowRight":
-                nextVideo();
-                break;
-            case "Enter":
-            case "Escape":
-                if (channelId !== null) {
-                    location.href = url + "?channelId=" + channelId;
-                } else {
-                    location.href = url;
-                }
-                break;
-        }
-    };
-
-    function loadPreview(id) {
-        getJSON(getPreviewUrl(id), function (status, response) {
-            let previewInfo = document.getElementById("previewInfo");
-            let previewItems = document.getElementById("previewItems");
-            previewItems.innerHTML = "";
-            previewInfo.innerHTML = response.Position + "/" + response.TotalCount;
-
-            response.Items.map(function (value, index, array) {
-                var div = document.createElement("div");
-                div.classList.add("image");
-                div.classList.add("position" + index);
-
-                var img = new Image(value.Thumbnail.Width);
-                img.src = value.Thumbnail.Url;
-
-                div.appendChild(img);
-                previewItems.appendChild(div);
-            })
-
-        })
-    }
-
-    function getJSON(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.responseType = 'json';
-        xhr.onload = function () {
-            var status = xhr.status;
-            if (status === 200) {
-                callback(null, xhr.response);
-            } else {
-                callback(status, xhr.response);
-            }
-        };
-        xhr.send();
-    }
-</script>
 </body>
+</html>
