@@ -8,10 +8,7 @@ import (
 )
 
 func getChannelIds() []string {
-	return []string{
-		"UC-Gm4EN7nNNR3k67J8ywF4g", // blippi toys
-
-	}
+	return []string{}
 }
 
 func getPlaylistIds() []string {

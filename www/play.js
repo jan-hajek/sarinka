@@ -1,9 +1,3 @@
-let port = location.port;
-
-let url = location.protocol + "//" + location.hostname;
-if (port !== "80") {
-    url += ":" + port
-}
 let urlParams = new URLSearchParams(location.search);
 let position = 0;
 let channelId = urlParams.get("channelId");
@@ -12,35 +6,11 @@ let nextId = null;
 let player;
 let screenWidth = screen.width;
 
-function getChannelsUrl() {
-    return url + "/channels/";
-}
+var tag = document.createElement('script');
 
-
-function startHomepage() {
-    getJSON(getChannelsUrl(), function (status, response) {
-        let channelsDiv = document.getElementById("channels");
-        channelsDiv.innerHTML = "";
-
-        response.Channels.map(function (value, index, array) {
-            let a = document.createElement("a");
-            a.classList.add("channel");
-            a.href = "play/?channelId=" + value.Id;
-
-            let img = new Image();
-            img.src = value.ThumbnailUrl;
-            img.classList.add("img");
-
-            var text = document.createElement("div");
-            text.innerHTML = value.Name;
-            text.classList.add("title");
-
-            a.appendChild(img);
-            channelsDiv.appendChild(a);
-        });
-    });
-}
-
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 function getPlayUrl(id) {
     return createUrl("/current/", id, channelId);
