@@ -21,6 +21,7 @@ func NewChannel(result youtube.Result) *Channel {
 		ThumbnailUrl: result.Channel.Thumbnail.Url,
 		ids:          make(map[string]int),
 		totalCount:   result.TotalResults,
+		downloaded:   make([]*youtube.Item, 0),
 	}
 
 	ch.add(result.Items)
@@ -65,6 +66,10 @@ func (ch *Channel) getPosition(id string) int {
 }
 
 func (ch *Channel) GetItems(startId string, limit int) (position int, res []*youtube.Item) {
+	if len(ch.downloaded) == 0 {
+		return
+	}
+
 	position = ch.getPosition(startId)
 
 	x := position

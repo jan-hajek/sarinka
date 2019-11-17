@@ -19,13 +19,8 @@ func New(path string) *Handler {
 }
 
 func (h *Handler) LoadAllData() (res []youtube.Result, err error) {
-	files, err := ioutil.ReadDir(h.path)
-	if err != nil {
-		return
-	}
-
-	for _, f := range files {
-		data, err := h.loadFile(path.Join(h.path, f.Name()))
+	for _, name := range list {
+		data, err := h.loadFile(path.Join(h.path, name+".json"))
 		if err != nil {
 			return res, err
 		}

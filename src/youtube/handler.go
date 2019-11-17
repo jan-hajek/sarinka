@@ -7,22 +7,21 @@ import (
 )
 
 type Handler struct {
-	key       string
-	pageLimit int
+	key        string
+	itemsLimit int
 }
 
-func New(key string, pageLimit int) *Handler {
+func New(key string, itemsLimit int) *Handler {
 	return &Handler{
-		key:       key,
-		pageLimit: pageLimit,
+		key:        key,
+		itemsLimit: itemsLimit,
 	}
 }
 
 type Result struct {
-	Channel       Channel
-	Items         []*Item
-	TotalResults  int
-	NextPageToken string
+	Channel      Channel
+	Items        []*Item
+	TotalResults int
 }
 
 type Item struct {

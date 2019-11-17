@@ -27,10 +27,10 @@ func main() {
 	storage := storage.New(path.Join(pwd, "data"))
 
 	if download != nil && *download {
-		youtubeKey := "AIzaSyB26rMJblj16B-QSGApUyvB7qpNSnI4nQI"
+		youtubeKey := "AIzaSyBOi1g2HxI_Y4mhZ6hHwHQlYczWh22IDXw"
 		downloader.New(
 			storage,
-			youtube.New(youtubeKey, 50),
+			youtube.New(youtubeKey, 100),
 		).SaveData()
 
 		return

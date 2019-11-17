@@ -4,24 +4,22 @@
 	<meta charset="UTF-8">
 	<title>Sárinka</title>
 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style type="text/css">
 		body {
 			margin: 0;
 			padding: 0;
 			background-color: black;
-			overflow: hidden;
 		}
 
 		#channels {
-			position: relative;
-			margin-top: 100px;
 		}
 
 		.channel {
 			display: inline-block;
 			margin: 20px;
 			vertical-align: middle;
-			height: 200px;
+			width: 12.5%;
 		}
 
 		.channel.selected img {
@@ -31,9 +29,23 @@
 		}
 
 		.channel .img {
-			width: 150px;
-			opacity: 0.6;
+			width: 100%;
 		}
+
+		@media only screen and (max-width: 600px) {
+			.channel {
+				width: 50%;
+				margin: 0;
+			}
+		}
+
+		@media only screen and (min-width: 601px) and (max-width: 1024px) {
+			.channel {
+				width: 25%;
+				margin: 0;
+			}
+		}
+
 
 	</style>
 

@@ -19,12 +19,16 @@ func (h *Handler) currentHandler(w http.ResponseWriter, r *http.Request) {
 	id := getId(r)
 
 	channel := h.app.GetChannel(channelId)
-	_, item := channel.GetItems(id, 2)
+	_, items := channel.GetItems(id, 2)
 
 	result := PlayResponse{
 		Channel: channel,
-		Current: item[0],
-		Next:    item[1],
+	}
+	if len(items) > 0 {
+		result.Current = items[0]
+	}
+	if len(items) > 1 {
+		result.Next = items[1]
 	}
 
 	data, err := json.Marshal(&result)
