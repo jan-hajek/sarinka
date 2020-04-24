@@ -6,11 +6,11 @@ import (
 	"os"
 	"path"
 
-	"git.vsh-labs.cz/cml/nest/src/app"
-	"git.vsh-labs.cz/cml/nest/src/downloader"
-	"git.vsh-labs.cz/cml/nest/src/http"
-	"git.vsh-labs.cz/cml/nest/src/storage"
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/app"
+	"git.vsh-labs.cz/jelito/sarinka/src/downloader"
+	"git.vsh-labs.cz/jelito/sarinka/src/http"
+	"git.vsh-labs.cz/jelito/sarinka/src/storage"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 var App *app.Handler

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.vsh-labs.cz/cml/nest/src/app"
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/app"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 func (h *Handler) currentHandler(w http.ResponseWriter, r *http.Request) {

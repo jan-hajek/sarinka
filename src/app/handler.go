@@ -3,8 +3,8 @@ package app
 import (
 	"sort"
 
-	"git.vsh-labs.cz/cml/nest/src/storage"
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/storage"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 type Handler struct {

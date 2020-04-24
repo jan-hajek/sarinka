@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"git.vsh-labs.cz/cml/nest/src/app"
+	"git.vsh-labs.cz/jelito/sarinka/src/app"
 )
 
 type Handler struct {

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"path"
 
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 type Handler struct {

@@ -3,8 +3,8 @@ package downloader
 import (
 	"log"
 
-	"git.vsh-labs.cz/cml/nest/src/storage"
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/storage"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 func getChannelIds() []string {
@@ -12,7 +12,6 @@ func getChannelIds() []string {
 		//"UCV9FxSrPVEX3vjBax04V_uA", // booba
 		//"UCvMF0dbLxjQVg9xCxIx8E6g", // learn english with om nom
 		//"UCdknlZNiH-2VWrvjXkx9dJA", // pocoyo english
-		//"UCEzJkg_EtsuPwDnez851ZKw", // pocoyo songs
 		//"UCbCmjCuTUZos6Inko4u57UQ", //coco melon
 		//"UC-Gm4EN7nNNR3k67J8ywF4g", // blippi toys
 		//"UC5PYHgAzJ1wLEidB58SK6Xw", // blippi
@@ -28,11 +27,14 @@ func getChannelIds() []string {
 		//"UCZBqWU1GgUHBTPZ-FMPZ8-Q", // byl jednou
 		//"UC6zhI71atP7YLoZyIyCIGNw", // dave and ava
 		//"UCwCP0VQHMl0YvZJCAUB6pPg", // cat family
+
+		//"UCEzJkg_EtsuPwDnez851ZKw", // pocoyo songs - nic tam neni
 	}
 }
 
 func getPlaylistIds() []string {
 	return []string{
+		//"PL4nt7KiBPAY-CA0Ll2boMp4wM--Lb11XC", // pocoyo songs
 		// Nefunguje //"PLql8Ul6KKObLH2fYr6WxuKQD8q2a176Hd", // krtek
 		//"PL7u4k6y5_Re-LBijWl2V_FJeMlvLPO9Wg", // fik
 		//"PLxf0FUnNFREf3zhBkp9vhpAvAWL8IWvIM", // donald

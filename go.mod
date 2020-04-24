@@ -1,4 +1,4 @@
-module git.vsh-labs.cz/cml/nest
+module git.vsh-labs.cz/jelito/sarinka
 
 go 1.12
 

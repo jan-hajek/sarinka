@@ -64,14 +64,29 @@ function changePage(response) {
     }
 }
 
+function playPause() {
+    let playerSuggestCover = document.getElementById("playerSuggestCover");
+    if (playing) {
+        playerSuggestCover.style.display = "block"
+        player.pauseVideo();
+    } else {
+        playerSuggestCover.style.display = "none"
+        player.playVideo();
+    }
+}
+
 function setYoutubeId(id) {
     if (!player) {
         let width = screenWidth - 280;
-        let height = screen.height;
+        let height = document.documentElement.clientHeight - 20;
 
         let overlay = document.getElementById("playerOverlay");
         overlay.style.width = width + "px";
         overlay.style.height = height + "px";
+
+        overlay.addEventListener("click", playPause);
+        let playerSuggestCover = document.getElementById("playerSuggestCover");
+        playerSuggestCover.style.width = width + "px";
 
         player = new YT.Player('player', {
             width: width,
@@ -107,11 +122,7 @@ function registerPlayOnKeydown() {
                 break;
             case " ":
                 event.preventDefault();
-                if (playing) {
-                    player.pauseVideo();
-                } else {
-                    player.playVideo();
-                }
+                playPause()
                 break;
             case "Escape":
                 console.log("escape");

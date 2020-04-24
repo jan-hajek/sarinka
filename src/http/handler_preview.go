@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 func (h *Handler) previewHandler(w http.ResponseWriter, r *http.Request) {

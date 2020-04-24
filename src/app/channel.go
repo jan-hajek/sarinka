@@ -1,7 +1,7 @@
 package app
 
 import (
-	"git.vsh-labs.cz/cml/nest/src/youtube"
+	"git.vsh-labs.cz/jelito/sarinka/src/youtube"
 )
 
 type Channel struct {
