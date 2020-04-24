@@ -1,6 +1,10 @@
 package storage
 
 var list = []string{
+	"UCV9FxSrPVEX3vjBax04V_uA", // booba
+	"UCvMF0dbLxjQVg9xCxIx8E6g", // learn english with om nom
+	"UCdknlZNiH-2VWrvjXkx9dJA", // pocoyo english
+	"UCEzJkg_EtsuPwDnez851ZKw", // pocoyo songs
 	"UCAOtE1V7Ots4DjM8JLlrYgg", // pepa the pig
 	"UCg5zrJTzYv0fQJXosvvavPw", // funny chicky
 	"UCHyeWVPbdJNWNxdlsKl3IYA", // sunny bunnies
