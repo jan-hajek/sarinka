@@ -9,6 +9,9 @@ import (
 
 func getChannelIds() []string {
 	return []string{
+		"UCz3IBQqj2N9CQsFD4Q3wGyQ", // chicky
+		//"UCimUjw9rtpIT9awwDyfelSA", // larva
+		//"UCw68zxpuQwbAxTqhjvB8ysQ", // penclimation
 		//"UCV9FxSrPVEX3vjBax04V_uA", // booba
 		//"UCvMF0dbLxjQVg9xCxIx8E6g", // learn english with om nom
 		//"UCdknlZNiH-2VWrvjXkx9dJA", // pocoyo english
@@ -27,7 +30,6 @@ func getChannelIds() []string {
 		//"UCZBqWU1GgUHBTPZ-FMPZ8-Q", // byl jednou
 		//"UC6zhI71atP7YLoZyIyCIGNw", // dave and ava
 		//"UCwCP0VQHMl0YvZJCAUB6pPg", // cat family
-
 		//"UCEzJkg_EtsuPwDnez851ZKw", // pocoyo songs - nic tam neni
 	}
 }
