@@ -9,7 +9,7 @@ import (
 
 func getChannelIds() []string {
 	return []string{
-		"UCz3IBQqj2N9CQsFD4Q3wGyQ", // chicky
+		//"UCz3IBQqj2N9CQsFD4Q3wGyQ", // chicky
 		//"UCimUjw9rtpIT9awwDyfelSA", // larva
 		//"UCw68zxpuQwbAxTqhjvB8ysQ", // penclimation
 		//"UCV9FxSrPVEX3vjBax04V_uA", // booba
@@ -36,6 +36,7 @@ func getChannelIds() []string {
 
 func getPlaylistIds() []string {
 	return []string{
+		//"PLXpM1k9vvLBIUVEOW8PPsJLM26-92hgFA", // kralici
 		//"PL4nt7KiBPAY-CA0Ll2boMp4wM--Lb11XC", // pocoyo songs
 		// Nefunguje //"PLql8Ul6KKObLH2fYr6WxuKQD8q2a176Hd", // krtek
 		//"PL7u4k6y5_Re-LBijWl2V_FJeMlvLPO9Wg", // fik
