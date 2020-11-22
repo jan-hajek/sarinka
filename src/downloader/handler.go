@@ -9,6 +9,7 @@ import (
 
 func getChannelIds() []string {
 	return []string{
+		//"UChGJGhZ9SOOHvBB0Y4DOO_w", // ryan's world
 		//"UCz3IBQqj2N9CQsFD4Q3wGyQ", // chicky
 		//"UCimUjw9rtpIT9awwDyfelSA", // larva
 		//"UCw68zxpuQwbAxTqhjvB8ysQ", // penclimation
